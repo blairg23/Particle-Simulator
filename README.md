@@ -1,4 +1,4 @@
-Particle Simulator
+ParticleSimulator
 ===========
 
-Particle Simulator written in Python using the OpenGL libraries
+Particle physics simulator written in Python using the OpenGL libraries.
