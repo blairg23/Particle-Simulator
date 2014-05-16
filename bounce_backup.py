@@ -1,9 +1,11 @@
 #!/usr/bin/python
+from OpenGL.GL import *
+from OpenGL.GLU import *
+from OpenGL.GLUT import *
+import sys, time
+from pylab import *
 from  particles import *
 from particleInitialize import *
-from utils import *
-
-import sys, time, signal
 
 # This program is a 'driver' for a simple simulation of partilces in a box with
 # periodic boundary conditions. Your objective will be to complete the code here
@@ -50,7 +52,7 @@ rotateX = 0
 rotateY = 0
 rotateZ = 0
 translateZ = 0
-lightMover = -500
+lightMover = 0
 
 color = True
 teapot = False
@@ -60,18 +62,16 @@ donut = False
 velocity = True #To start with white background
 radius = False
 greyScale = False
-alpha = 0.5#How transparent the spheres are
+alpha = 1.0#How transparent the spheres are
 
 def init():
     # Initialization
     
     glutInit(sys.argv)
-    draw_window(GLUT_RGB | GLUT_DOUBLE, 'Large Hadron Collider', size=(wSize, wSize))
-    
-##    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH)
-##    glutInitWindowPosition(100,0)
-##    glutInitWindowSize(wSize, wSize);
-##    glutCreateWindow("Large Hadron Collider")
+    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH)
+    glutInitWindowPosition(100,0)
+    glutInitWindowSize(wSize, wSize);
+    glutCreateWindow("Large Hadron Collider")
     glClearColor(1.0,1.0,1.0,1.0)
     
     glEnable(GL_DEPTH_TEST)
@@ -116,13 +116,12 @@ def display():
     
     #Fancy custom zooming and rotation:
     glLoadIdentity()
-    #glTranslate(0, 0, translateZ)
+    glTranslate(0, 0, translateZ)
     glRotatef(rotateX, 1.0, 0.0, 0.0)
     glRotatef(rotateY, 0.0, 1.0, 0.0)
     glRotatef(rotateZ, 0.0, 0.0, 1.0)
     #glLight(GL_LIGHT0, GL_POSITION, [rotateX, rotateY, rotateZ, 1.0]);
-    glLight(GL_LIGHT0, GL_POSITION, [0, 0, lightMover, 1.0])    
-#    glLight(GL_LIGHT0, GL_POSITION, [lightMover, lightMover, lightMover, 1.0])    
+    glLight(GL_LIGHT0, GL_POSITION, [lightMover, lightMover, lightMover, 1.0])    
 
     # no idea
     glEnable(GL_CULL_FACE)
@@ -134,14 +133,10 @@ def display():
     maxVel = 0.0
     for i in range(p.N):
         #Define the particle properties:
-        rad = 255./p.r[i]#p.r[i]*255.999
+        rad = p.r[i]
         velX = p.vx[i]
         velY = p.vy[i]
-        velZ = p.vz[i]
-##        velX = abs(p.vx[i]*255.999)
-##        velY = abs(p.vy[i]*255.999)
-##        velZ = abs(p.vz[i]*255.999)
-##        print velX, velY, velZ
+        velZ = p.vz[i]        
         #Define the colors:
         
         #DEFAULT COLORS:
@@ -150,34 +145,34 @@ def display():
         blue = 0
         if velocity:
             glClearColor(1.0,1.0,1.0,1.0)
-            red = abs(velX)
-            green = abs(velY)
-            blue = abs(velZ)
+            red = velX
+            green = velY
+            blue = velZ            
 #########This is cool if you want to see the max or min velocities in action: #################
-            if velX > maxVel:
-                red = abs(velX)
-                maxVel = velX
-                print "Current Max Velocity is: X-Velocity (RED) at " + str(maxVel)
-            elif velX < minVel:
-                red = abs(1./velX)
-                minVel = velX
-                print "Current Min Velocity is: X-Velocity (RED) at " + str(minVel)
-            elif velY > maxVel:
-                green = abs(velY)
-                maxVel = velY
-                print "Current Max Velocity is: Y-Velocity (GREEN) at " + str(maxVel)
-            elif velY < minVel:
-                green = abs(1./velY)
-                minVel = velY
-                print "Current Min Velocity is: Y-Velocity (GREEN) at " + str(minVel)
-            elif velZ > maxVel:
-                blue = abs(velZ)
-                maxVel = velZ
-                print "Current Max Velocity is: Z-Velocity (BLUE) at " + str(maxVel)
-            elif velZ < minVel:
-                blue = abs(velZ)
-                minVel = velZ
-                print "Current Min Velocity is: Z-Velocity (BLUE) at " + str(minVel)
+##            if velX > maxVel:
+##                red = velX
+##                maxVel = velX
+##                print "Current Max Velocity is: X-Velocity (RED) at " + str(maxVel)
+##            elif velX < minVel:
+##                red = 1/velX
+##                minVel = velX
+##                print "Current Min Velocity is: X-Velocity (RED) at " + str(minVel)
+##            elif velY > maxVel:
+##                green = velY
+##                maxVel = velY
+##                print "Current Max Velocity is: Y-Velocity (GREEN) at " + str(maxVel)
+##            elif velY < minVel:
+##                green = 1/velY
+##                minVel = velY
+##                print "Current Min Velocity is: Y-Velocity (GREEN) at " + str(minVel)
+##            elif velZ > maxVel:
+##                blue = velZ
+##                maxVel = velZ
+##                print "Current Max Velocity is: Z-Velocity (BLUE) at " + str(maxVel)
+##            elif velZ < minVel:
+##                blue = velZ
+##                minVel = velZ
+##                print "Current Min Velocity is: Z-Velocity (BLUE) at " + str(minVel)
         elif radius:
             glClearColor(1.0,1.0,1.0,1.0)
             red = rad
@@ -189,6 +184,7 @@ def display():
             red = rad
             green = rad
             blue = rad
+
         else:
             red = 0
             green = 0
@@ -299,7 +295,7 @@ def keyboard(key, x, y):
         
     if key == 'q':
         print "'q' was pressed"
-        quit()        
+        exit(0)
     #glutPostRedisplay()
     
 def special(key, x, y):
@@ -333,12 +329,7 @@ def reshape(width, height):
       glMatrixMode(GL_MODELVIEW)
 
 
-def sigint(signum, frame):
-    quit()
-    
-def quit():
-    sys.exit(0)
-    
+
 #### Main Program ####
 
 
@@ -348,8 +339,6 @@ def go():
     # Start the simulation
 
     glutMainLoop()
-
-signal.signal(signal.SIGINT, sigint)
 
 go()
   

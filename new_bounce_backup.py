@@ -8,9 +8,6 @@ import time
 import signal
 import logging
 
-#Globals
-velocity = True
-
 class BouncingBall:
 
     def __init__(self):
@@ -76,9 +73,6 @@ class BouncingBall:
         glutMainLoop()
 
     def display(self):
-        #Globals
-        global velocity
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         # glRotate(self.camera['angle'] % 90,q self.camera['x'] % 100, self.camera['y'], self.camera['z'])
@@ -92,6 +86,7 @@ class BouncingBall:
         glRotate(self.camera['z'], 0, 0, 1)
 
 
+
         # no idea
         glEnable(GL_CULL_FACE)
         glEnable(GL_POLYGON_SMOOTH)
@@ -100,48 +95,13 @@ class BouncingBall:
         h = lambda x: float(x) / 255.0
 
         alpha = 0.5
-
-        minVel = 9999
-        maxVel = 0.0
-
         # glutWireTeapot(5)
         for i in range(self.p.N):
-            velX = self.p.x[i]
-            velY = self.p.y[i]
-            velZ = self.p.z[i]
-
             # glLoadIdentity()
             glPushMatrix()
-            glTranslate(velX, velY, velZ)
-#            glTranslate(self.p.x[i], self.p.y[i], self.p.z[i])
+            glTranslate(self.p.x[i], self.p.y[i], self.p.z[i])
 
-            if velocity:
-                glClearColor(1.0,1.0,1.0,1.0)
-                red = abs(velX)
-                green = abs(velY)
-                blue = abs(velZ)
-                                
-                if velX > maxVel:
-                    red = abs(velX)
-                    maxVel = velX
-                elif velX < minVel:
-                    red = abs(1./velX)
-                    minVel = velX
-                elif velY > maxVel:
-                    green = abs(velY)
-                    maxVel = velY
-                elif velY < minVel:
-                    green = abs(1./velY)
-                    minVel = velY
-                elif velZ > maxVel:
-                    blue = abs(velZ)
-                    maxVel = velZ
-                elif velZ < minVel:
-                    blue = abs(velZ)
-                    minVel = velZ
-
-            glColor(red, green, blue, alpha)
-#            glColor(0.7, 1.0, 0.3, alpha) #Original colors
+            glColor(0.7, 1.0, 0.3, alpha)
             glutSolidSphere(self.p.r[i], self.slices, self.stacks)
             glPopMatrix()
 
