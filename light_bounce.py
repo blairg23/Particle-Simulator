@@ -1,3 +1,9 @@
+#Author: Blair Gemmer
+#CSCI 577 - Computer Simulations and Modeling
+# This program is a 'driver' for a simple simulation of particles in a box with
+# periodic boundary conditions. 
+# This version shows the light source being outside the box.
+
 #! /usr/bin/env python
 from particles import *
 from particleInitialize import *

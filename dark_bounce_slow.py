@@ -1,3 +1,9 @@
+#Author: Blair Gemmer
+#CSCI 577 - Computer Simulations and Modeling
+# This program is a 'driver' for a simple simulation of particles in a box with
+# periodic boundary conditions. 
+# This version shows the light source being inside the box.
+
 #!/usr/bin/python
 from  particles import *
 from particleInitialize import *
@@ -5,9 +11,6 @@ from utils import *
 
 import sys, time, signal
 
-# This program is a 'driver' for a simple simulation of partilces in a box with
-# periodic boundary conditions. Your objective will be to complete the code here
-# so that you can 'see' the particles with OpenGL.
 
 # Ball parameters
 
@@ -31,7 +34,7 @@ t = 0      # Initial time
 # Particle update data:
 COUNT = 1                    # Number of time steps computed
 UPDATE_FRAMES = 2            # How often to redraw screen
-ADD_PARTICLE_INTERVAL = 10   # How often to add a new particle
+ADD_PARTICLE_INTERVAL = 1000   # How often to add a new particle
 
 # How resolved are the spheres?
 STACKS = 25
